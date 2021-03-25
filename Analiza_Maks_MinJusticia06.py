@@ -25,28 +25,11 @@ import sys
 import time
 from datetime import datetime
 from bs4 import BeautifulSoup
+from distutils.dir_util import copy_tree
 import shutil
 import time
+from shutil import rmtree
 
-
-
-inputpath = "D:/exportNew"
-outputpath = "C:\\ixportaos"
-for dirpath, dirnames, filenames in os.walk(inputpath):
-    print("dirpath",dirpath)
-    print("dirnames",dirnames)
-    #print("filenames",filenames)
-    structure = os.path.join(outputpath, dirpath[len(inputpath):])
-    print("structure",structure)
-
-    if not os.path.isdir(structure):
-        print("structure--> Fabrico",structure)
-        os.mkdir(structure) 
-    else:
-        print("structure--> NO Fabrico",structure)        
-    time.sleep(10)
-
-sys.exit()
 
 plataforma = sys.platform
 if plataforma == 'win32':
@@ -67,27 +50,27 @@ archiErr = codecs.open(".."+os.sep+"ERR_"+el_epoch+".txt", "w+","utf-8") # Creo 
 os.chdir("D:\\exportNew")
 osCurrent = os.getcwd()
 
+DIRECTORIO_ORIGEN = "D:/exportNew"
+DIRECTORIO_DESTINO = "D:\\exportados\\htmls"
 
-        
-sys.exit()
+try:
+    rmtree(DIRECTORIO_DESTINO)
+except:
+    pass
 
-#dirs    = os.listdir()
+#time.sleep(20)
 
-## Function to remove tags
-#def remove_tags(html):
-#  
-#    # parse html content
-#    soup = BeautifulSoup(html, "html.parser")
-#  
-#    for data in soup(['style', 'script']):
-#        # Remove tags
-#        data.decompose()
-#  
-#    # return data by retrieving the tag content
-#    return ' '.join(soup.stripped_strings)
-# 
-## Print the extracted data
-#print(remove_tags(HTML_DOC))
+now = datetime.now()
+el_epoch = str(int(time.mktime(now.timetuple())))
+print("Comienza copiado de File System :"+time.strftime("%H:%M:%S")) #Formato de 24 horas
+
+print("Copiando...")
+
+copy_tree(DIRECTORIO_ORIGEN, DIRECTORIO_DESTINO)
+
+now = datetime.now()
+el_epoch = str(int(time.mktime(now.timetuple())))
+print("Finalizo copiado de File System :"+time.strftime("%H:%M:%S")) #Formato de 24 horas
 
 """
 Modulo de definiciones de ElasticSearch
