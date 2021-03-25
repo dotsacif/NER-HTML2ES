@@ -1,0 +1,408 @@
+# -*- coding: utf-8 -*-
+"""
+curl -XPOST localhost:9200/index_local/my_doc_type/_bulk --data-binary  @/home/data1.json
+https://stackoverflow.com/questions/33340153/elasticsearch-bulk-index-json-data
+
+https://kb.objectrocket.com/elasticsearch/how-to-use-python-helpers-to-bulk-load-data-into-an-elasticsearch-index
+
+http://suin-juriscol.gov.co/index.html
+
+curl -X GET "localhost:9200/minjusticia/_mapping?pretty"
+
+https://elasticsearch-py.readthedocs.io/en/master/api.html
+https://medium.com/naukri-engineering/elasticsearch-tutorial-for-beginners-using-python-b9cb48edcedc
+
+
+ATENCION+   Ver...
+"ignore_above": 256
+
+
+"""
+import elasticsearch
+import os
+import codecs
+import sys
+import time
+from datetime import datetime
+from bs4 import BeautifulSoup
+import shutil
+import time
+
+
+
+inputpath = "D:/exportNew"
+outputpath = "C:\\ixportaos"
+for dirpath, dirnames, filenames in os.walk(inputpath):
+    print("dirpath",dirpath)
+    print("dirnames",dirnames)
+    #print("filenames",filenames)
+    structure = os.path.join(outputpath, dirpath[len(inputpath):])
+    print("structure",structure)
+
+    if not os.path.isdir(structure):
+        print("structure--> Fabrico",structure)
+        os.mkdir(structure) 
+    else:
+        print("structure--> NO Fabrico",structure)        
+    time.sleep(10)
+
+sys.exit()
+
+plataforma = sys.platform
+if plataforma == 'win32':
+    cadena_windows = "chcp 65001"
+    os.system(cadena_windows)
+    #sys.exit()
+
+now = datetime.now()
+el_epoch = str(int(time.mktime(now.timetuple())))
+
+print("Empieza :"+time.strftime("%H:%M:%S")) #Formato de 24 horas
+inicial = time.strftime("%H:%M:%S")
+horario = str(time.strftime("%H:%M:%S"))
+
+archiBulk = codecs.open(".."+os.sep+"Bulk"+el_epoch+".json", "w","utf-8") # Creo archivo Json en un nivel mas arriba
+archiErr = codecs.open(".."+os.sep+"ERR_"+el_epoch+".txt", "w+","utf-8") # Creo archivo de erroresen un nivel mas arriba
+
+os.chdir("D:\\exportNew")
+osCurrent = os.getcwd()
+
+
+        
+sys.exit()
+
+#dirs    = os.listdir()
+
+## Function to remove tags
+#def remove_tags(html):
+#  
+#    # parse html content
+#    soup = BeautifulSoup(html, "html.parser")
+#  
+#    for data in soup(['style', 'script']):
+#        # Remove tags
+#        data.decompose()
+#  
+#    # return data by retrieving the tag content
+#    return ' '.join(soup.stripped_strings)
+# 
+## Print the extracted data
+#print(remove_tags(HTML_DOC))
+
+"""
+Modulo de definiciones de ElasticSearch
+"""
+ES_HOST = {"host" : "localhost", "port" : 9200}
+INDEX_NAME = 'minjusticia'
+TYPE_NAME = 'ciclope'
+ID_FIELD = 'cms_id'
+
+try:
+        es = elasticsearch.Elasticsearch([{'host': 'localhost', 'port': 9200}])
+        #es.indices.delete(index='minjusticia', ignore=[400, 404])
+        
+        # delete index if exists
+        if es.indices.exists(INDEX_NAME):
+            es.indices.delete(index=INDEX_NAME,ignore=[400, 404])
+        
+            
+        # index settings
+        request_body = {
+                "settings" : {
+                    "number_of_shards": 5,
+                    "number_of_replicas": 1
+                },
+        
+                'mappings': {
+                        'properties': {
+                           'subtipo': {'type': 'text'},
+        	                'es_codigo':  {'type': 'text'},
+        	                'estado_documento':  {'type': 'text'},
+        	                'asunto':  {'type': 'text'},
+        	                'cms_id': {'type': 'long'},
+                            'materia' :  {'type': 'text'},
+                            'sector' : {'type': 'text'},
+                            'entidad_emisora' : {'type': 'text'},
+                            'tipo' : {'type': 'text'},
+                            'estado' : {'type': 'text'},
+                            'epigrafe' : {'type': 'text'},
+                            'numero' : {'type': 'text'},
+                            'name' : {'type': 'text'},
+                            'anio' : {'type': 'text'},
+                            'es_estatuto' : {'type': 'text'},
+                            'titulo_uniforme' : {'type': 'text'},
+                            'Estatutos' : {'type': 'text'},
+                            'id_orig' : {'type': 'text'},
+                            'title_orig' : {'type': 'text'},
+                            'coleccion_orig' : {'type': 'text'},
+                            'texto_plano' : {'type': 'text'}, 
+                            'tipo_providencia_consejo_est' : {'type': 'text'}, 
+        
+                        }}
+            }
+        print("creando 'Ciclope' index...")
+        
+        # create an index, ignore if it exists already
+        res1 = es.indices.create(index = INDEX_NAME,  body = request_body, ignore=400)
+
+except:
+        print("Error inicio ElasticSearch ")   
+        archiErr.write("Error inicio ElasticSearch "+"\n")     
+        archiErr.close()
+        archiBulk.close()
+        sys.exit()
+
+bulk_data = [] 
+contaLinea = 1
+
+"""
+Fin modulo ES
+"""
+
+#print(" Arranco ")
+apareos = dict()
+
+maks =[]
+contenido = os.listdir(osCurrent)
+for fichero in contenido:
+    #print(fichero)
+    es_xml = fichero.find('.xml')
+    if es_xml > 0:
+        maks.append(fichero)
+
+for Arkivo in maks:
+   print("Trabajo la Mak "+Arkivo)    
+   laMak = Arkivo
+
+   try:
+        archivo  = codecs.open(Arkivo, "r", "utf-8")
+   except:
+        print("Error inesperado "+">>>>>>"+laMak)   
+        archiErr.write("Error inesperado "+">>>>>>"+laMak+"\n") 
+        #sys.exit()
+        continue
+        
+   linea0="..."
+   
+   anio   = " "
+   numero = " "
+   tipo   = " "
+   estado = " "
+   estado_documento = " "
+   epigrafe = " "
+   name = " "
+   coleccion = " "
+   id_orig  = " "
+   title_orig = " "
+   coleccion_orig = " "    
+   subtipo = " " 
+   es_codigo = " " 
+   nombre_codigo = " " 
+   asunto = " " 
+   materia = " " 
+   sector = " " 
+   entidad_emisora = " "
+   tipo_providencia_consejo_est  =" "  
+   cms_id = " "
+   texto_plano = " "
+
+
+   while linea0 != '':
+    # procesar línea
+    linea0=archivo.readline()
+    #print("proceso linea de la MAK ",linea0)
+    inicio = linea0.find('location=')
+    if inicio >0:
+        final  = linea0.find('.html',inicio)
+        NomeFile = linea0[inicio+10:final+5]
+
+        inicio = NomeFile.rfind('\\')
+        NomeFile2 = NomeFile[inicio+1:]
+         
+        """
+        BUSCO ID del documento EN LA MAK
+        """
+        inicio = linea0.find('id=')
+        NomeFile = linea0[inicio+4:]
+        final = NomeFile.find('"/>')
+        id_orig = NomeFile[:final]
+  
+        
+        """
+        BUSCO TITLE del documento EN LA MAK
+        """
+        inicio = linea0.find('title=')
+        NomeFile = linea0[inicio+7:]
+        final = NomeFile.find('"')
+        title_orig = NomeFile[:final]
+
+        
+        """
+        BUSCO LOCATION ORIGINAL
+        """
+        inicio = linea0.find('location=')
+        NomeFile = linea0[inicio+10:]
+        final = NomeFile.find(".html")
+        coleccion_orig = NomeFile[:final+5]
+
+      
+        Arkivo2 = "D:/exportNew/"+coleccion+"/"+NomeFile2
+        
+        Arkivo2 = coleccion_orig
+        destino2 = Arkivo2.replace("exportNew","Nuevos")
+        shutil.copytree(Arkivo2, destino2) 
+        sys.exit()  
+        
+        try:
+            archiIn  = codecs.open(Arkivo2, "r", "utf-8")
+            destino = "D:\\htmls\\"+NomeFile2
+            try:
+                #shutil.copy(Arkivo2, destino)
+                destino2 = Arkivo2.replace("exportNew","Nuevos")
+                shutil.copytree(Arkivo2, destino2) 
+                sys.exit()
+                #https://www.geeksforgeeks.org/python-shutil-copytree-method/
+            except:
+                print("error al grabar ccccccccccccccccc",destino)
+                pass   
+                
+        except:
+            #print("Error al open de  "+">>>>>>"+Arkivo2)   
+            archiErr.write("Error al open de  "+">>>>>>"+Arkivo2+" en la mak "+laMak+"\n")  
+            #sys.exit()  
+            continue
+        
+        print("nnn")
+        sys.exit()    
+            
+        with open(Arkivo2, 'r', encoding='utf-8') as f:  ## levanto el HTML para indexar por palabra libre
+             contenido_html = f.read()    
+             
+        linea=".."
+        # Empiezo a procesar los HTMLS.
+        apareos.clear()
+        while linea != '':
+         try:
+            linea=archiIn.readline()
+         except (IOError, ValueError):
+            #print("Un I/O error o ValueError sucedio >>> "+">>>>>>"+Arkivo)
+            archiErr.write("Un I/O error o ValueError sucedio >>> "+">>>>>>"+Arkivo+"\n") 
+            continue
+         except:
+            #print("Error inesperado "+">>>>>>"+Arkivo)   
+            archiErr.write("Error inesperado "+">>>>>>"+Arkivo+"\n") 
+            continue
+    
+         campos = ['<span field="subtipo">','<span field="es_codigo">','<span field="nombre_codigo">','<span field="estado_documento">','<span field="asunto">','<span field="materia">','<span field="sector">','<span field="entidad_emisora">','<span field="tipo">','<span field="estado">','<span field="epigrafe">','<span field="numero">','<span field="name">','<span field="anio">','<span field="es_estatuto">','<span field="titulo_uniforme">','<span field="Estatutos">','<span field="tipo_providencia_consejo_est">','<span field="cms_id">']
+         for campo in campos:
+
+             campito = campo.replace('<span field="','')
+             campito = campito.replace('">','')
+             negativo = campo+"</span>"
+            
+             if linea.find(campo) > 0 and linea.find(negativo) < 0:
+                 inicio = linea.find(campo)
+                 largo = len(campo)
+                 resto = linea[inicio:]
+                 fin = resto.find('</span>')
+                 payload = resto[largo:fin]
+                 payload = payload.replace("'","")
+                 # convertir una cadena en variable
+                 cadena = campito
+                 exec(cadena+"='"+payload+"'")
+                 apareos[campito] = payload
+                 
+ 
+        cadena = "{"
+        for k,v in apareos.items():
+            cadena = cadena +'"' +k + '"' + ':' +'"' + v + '",' 
+        
+        #cadena = cadena[:-1] +"}"
+        coleccion_orig = coleccion_orig.replace('\\','\\\\') 
+        cadena = cadena +'"id_orig":'+ '"' +id_orig +'"' +', "title_orig": '+'"' +title_orig +'","coleccion_orig":'+'"' +coleccion_orig +'"' # +"}"
+        apareos["id_orig"] = id_orig
+        apareos["title_orig"] = title_orig
+        apareos["coleccion_orig"] = coleccion_orig      
+        
+        soup = BeautifulSoup(contenido_html,'html.parser')
+        for data in soup(['style', 'script']):
+            # Remove tags
+            data.decompose()
+            
+        texto_plano =  ' '.join(soup.stripped_strings)
+        
+        #https://www.geeksforgeeks.org/remove-all-style-scripts-and-html-tags-using-beautifulsoup/
+        #texto_plano = str(soup.get_text())
+ 
+        cadena = cadena +","+'"texto_plano":'+'"'+texto_plano+'"'+"}"
+        apareos["texto_plano"] = texto_plano  
+           
+        #sys.exit()
+        el_id = str(contaLinea)
+
+        op_dict = {"index":{"_index": INDEX_NAME, "_id":el_id }  }
+        
+        bulk_data.append(op_dict)
+        bulk_data.append(apareos)
+
+
+        if len(bulk_data) > 10000: #	 attenti que van de a pares...
+            print("Grabando el BULK....")
+            try:
+                res = es.bulk(index = INDEX_NAME, body = bulk_data, refresh = True)
+                bulk_data = []
+            except:
+                print("Error No funciono BULK 10000 ElasticSearch ")   
+                archiErr.write("Error No funciono BULK 1000  ElasticSearch  "+"\n") 
+
+                bulk_data = []
+                
+        contaLinea = contaLinea + 1
+       
+        archiBulk.write('{"index":{}}'+"\n")
+        archiBulk.write(cadena+"\n")
+        
+if len(bulk_data) > 0:
+    print("bulk ULTIMO indexing...")
+    try:
+        res = es.bulk(index = INDEX_NAME, body = bulk_data, refresh = True)
+    except:
+        print("Error No funciono BULK FinalElasticSearch ")   
+        archiErr.write("Error No funciono BULK Final ElasticSearch  "+"\n") 
+        bulk_data = []
+
+
+print("Finalizo la Carga -------------------")  
+print("\n\n\nCantidad archivos HTML procesados",contaLinea)  
+
+
+"""
+Modulo sanity check
+"""
+try:
+    res = es.search(index = INDEX_NAME, size=2000, body={"query": {"match_all": {}}})
+    print("%d SANITY CHECK documents found" % res['hits']['total']['value'])
+    for doc in res['hits']['hits']:
+        trozo = doc['_source']['coleccion_orig']
+        #print("%s--->%s " % (doc['_id'],trozo[:300]))
+        #print("%s---> %s %s" % (doc['_id'], doc['_source']['numero'],doc['_source']['id_orig']))
+        continue
+except:
+        print("Error No funciono Sanity Check ElasticSearch ")   
+        archiErr.write("Error No funciono Check ElasticSearch  "+"\n")     
+
+"""
+FINAL
+Modulo sanity check
+"""
+
+print("Inicio:"+str(inicial))    
+print("Termina:"+time.strftime("%H:%M:%S")) 
+
+archiErr.close()
+archiBulk.close()
+
+"""
+curl -XGET localhost:9200/_cat/indices?v
+"""
+  
