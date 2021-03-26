@@ -53,12 +53,21 @@ osCurrent = os.getcwd()
 DIRECTORIO_ORIGEN = "D:/exportNew"
 DIRECTORIO_DESTINO = "D:\\exportados\\htmls"
 
+"""
+import stat
+os.chmod(DIRECTORIO_DESTINO, stat.S_IWOTH)
+rmtree(DIRECTORIO_DESTINO)
+
+
 try:
     rmtree(DIRECTORIO_DESTINO)
 except:
+    print("NO los pùde borrar")
     pass
 
 #time.sleep(20)
+
+sys.exit()
 
 now = datetime.now()
 el_epoch = str(int(time.mktime(now.timetuple())))
@@ -71,6 +80,8 @@ copy_tree(DIRECTORIO_ORIGEN, DIRECTORIO_DESTINO)
 now = datetime.now()
 el_epoch = str(int(time.mktime(now.timetuple())))
 print("Finalizo copiado de File System :"+time.strftime("%H:%M:%S")) #Formato de 24 horas
+"""
+
 
 """
 Modulo de definiciones de ElasticSearch
@@ -232,22 +243,22 @@ for Arkivo in maks:
         Arkivo2 = "D:/exportNew/"+coleccion+"/"+NomeFile2
         
         Arkivo2 = coleccion_orig
-        destino2 = Arkivo2.replace("exportNew","Nuevos")
-        shutil.copytree(Arkivo2, destino2) 
-        sys.exit()  
+        #destino2 = Arkivo2.replace("exportNew","Nuevos")
+        #shutil.copytree(Arkivo2, destino2) 
+        #sys.exit()  
         
         try:
             archiIn  = codecs.open(Arkivo2, "r", "utf-8")
-            destino = "D:\\htmls\\"+NomeFile2
-            try:
-                #shutil.copy(Arkivo2, destino)
-                destino2 = Arkivo2.replace("exportNew","Nuevos")
-                shutil.copytree(Arkivo2, destino2) 
-                sys.exit()
-                #https://www.geeksforgeeks.org/python-shutil-copytree-method/
-            except:
-                print("error al grabar ccccccccccccccccc",destino)
-                pass   
+            #destino = "D:\\htmls\\"+NomeFile2
+            # try:
+            #     #shutil.copy(Arkivo2, destino)
+            #     destino2 = Arkivo2.replace("exportNew","Nuevos")
+            #     shutil.copytree(Arkivo2, destino2) 
+            #     sys.exit()
+            #     #https://www.geeksforgeeks.org/python-shutil-copytree-method/
+            # except:
+            #     print("error al grabar ccccccccccccccccc",destino)
+            #     pass   
                 
         except:
             #print("Error al open de  "+">>>>>>"+Arkivo2)   
@@ -255,8 +266,8 @@ for Arkivo in maks:
             #sys.exit()  
             continue
         
-        print("nnn")
-        sys.exit()    
+        # print("nnn")
+        # sys.exit()    
             
         with open(Arkivo2, 'r', encoding='utf-8') as f:  ## levanto el HTML para indexar por palabra libre
              contenido_html = f.read()    
@@ -329,7 +340,7 @@ for Arkivo in maks:
         bulk_data.append(apareos)
 
 
-        if len(bulk_data) > 10000: #	 attenti que van de a pares...
+        if len(bulk_data) > 1000: #	 attenti que van de a pares...
             print("Grabando el BULK....")
             try:
                 res = es.bulk(index = INDEX_NAME, body = bulk_data, refresh = True)
