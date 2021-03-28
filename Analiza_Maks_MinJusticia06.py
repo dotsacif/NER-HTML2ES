@@ -47,11 +47,11 @@ horario = str(time.strftime("%H:%M:%S"))
 archiBulk = codecs.open(".."+os.sep+"Bulk"+el_epoch+".json", "w","utf-8") # Creo archivo Json en un nivel mas arriba
 archiErr = codecs.open(".."+os.sep+"ERR_"+el_epoch+".txt", "w+","utf-8") # Creo archivo de erroresen un nivel mas arriba
 
-os.chdir("D:\\exportNew")
+os.chdir("M:\\exportNew")
 osCurrent = os.getcwd()
 
-DIRECTORIO_ORIGEN = "D:/exportNew"
-DIRECTORIO_DESTINO = "D:\\exportados\\htmls"
+DIRECTORIO_ORIGEN = "M:/exportNew"
+DIRECTORIO_DESTINO = "M:\\exportados\\htmls"
 
 """
 import stat
@@ -340,15 +340,14 @@ for Arkivo in maks:
         bulk_data.append(apareos)
 
 
-        if len(bulk_data) > 1000: #	 attenti que van de a pares...
+        if len(bulk_data) > 1: #	 attenti que van de a pares...
             print("Grabando el BULK....")
             try:
                 res = es.bulk(index = INDEX_NAME, body = bulk_data, refresh = True)
                 bulk_data = []
             except:
-                print("Error No funciono BULK 10000 ElasticSearch ")   
-                archiErr.write("Error No funciono BULK 1000  ElasticSearch  "+"\n") 
-
+                print("Error No funciono BULK 1 ElasticSearch ")   
+                archiErr.write("Error No funciono BULK 1 ElasticSearch  "+"\n") 
                 bulk_data = []
                 
         contaLinea = contaLinea + 1
