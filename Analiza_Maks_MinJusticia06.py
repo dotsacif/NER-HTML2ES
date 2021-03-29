@@ -339,21 +339,24 @@ for Arkivo in maks:
         bulk_data.append(op_dict)
         bulk_data.append(apareos)
 
-
-        if len(bulk_data) > 1: #	 attenti que van de a pares...
-            print("Grabando el BULK....")
+        #res = es.bulk(index = INDEX_NAME, body = bulk_data, refresh = True)
+        #bulk_data = []
+        #print(contaLinea," ",Arkivo2)
+        
+        if len(bulk_data) > 500: #	 attenti que van de a pares...
+            #print("Grabando el BULK....")
             try:
                 res = es.bulk(index = INDEX_NAME, body = bulk_data, refresh = True)
                 bulk_data = []
+                print("Grabo el BULK....")
             except:
-                print("Error No funciono BULK 1 ElasticSearch ")   
-                archiErr.write("Error No funciono BULK 1 ElasticSearch  "+"\n") 
+                print("Error ---   No funciono EL BULK 500 ElasticSearch ")   
                 bulk_data = []
-                
+                        
         contaLinea = contaLinea + 1
        
-        archiBulk.write('{"index":{}}'+"\n")
-        archiBulk.write(cadena+"\n")
+        #archiBulk.write('{"index":{}}'+"\n")
+        #archiBulk.write(cadena+"\n")
         
 if len(bulk_data) > 0:
     print("bulk ULTIMO indexing...")
