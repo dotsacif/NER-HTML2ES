@@ -47,40 +47,37 @@ horario = str(time.strftime("%H:%M:%S"))
 archiBulk = codecs.open(".."+os.sep+"Bulk"+el_epoch+".json", "w","utf-8") # Creo archivo Json en un nivel mas arriba
 archiErr = codecs.open(".."+os.sep+"ERR_"+el_epoch+".txt", "w+","utf-8") # Creo archivo de erroresen un nivel mas arriba
 
-os.chdir("M:\\exportNew")
+#os.chdir("M:\\exportNew")
+os.chdir("D:\\exportNew")
+
 osCurrent = os.getcwd()
 
-DIRECTORIO_ORIGEN = "M:/exportNew"
-DIRECTORIO_DESTINO = "M:\\exportados\\htmls"
+#DIRECTORIO_ORIGEN = "M:/exportNew"
+#DIRECTORIO_DESTINO = "M:\\exportados\\htmls"
 
-"""
-import stat
-os.chmod(DIRECTORIO_DESTINO, stat.S_IWOTH)
-rmtree(DIRECTORIO_DESTINO)
+
+DIRECTORIO_ORIGEN = "D:/exportNew"
+DIRECTORIO_DESTINO = "D:\\exportados\\htmls"
 
 
 try:
     rmtree(DIRECTORIO_DESTINO)
 except:
-    print("NO los pùde borrar")
+    print("No Borraaa")
     pass
 
+os.makedirs(DIRECTORIO_DESTINO, exist_ok=True)
+
 #time.sleep(20)
-
-sys.exit()
-
-now = datetime.now()
-el_epoch = str(int(time.mktime(now.timetuple())))
-print("Comienza copiado de File System :"+time.strftime("%H:%M:%S")) #Formato de 24 horas
 
 print("Copiando...")
 
 copy_tree(DIRECTORIO_ORIGEN, DIRECTORIO_DESTINO)
+print("Copiado")
 
-now = datetime.now()
-el_epoch = str(int(time.mktime(now.timetuple())))
-print("Finalizo copiado de File System :"+time.strftime("%H:%M:%S")) #Formato de 24 horas
-"""
+print("Termino el Copiado :"+time.strftime("%H:%M:%S")) #Formato de 24 horas
+inicial = time.strftime("%H:%M:%S")
+horario = str(time.strftime("%H:%M:%S"))
 
 
 """
