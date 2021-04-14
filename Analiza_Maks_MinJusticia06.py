@@ -60,6 +60,7 @@ DIRECTORIO_ORIGEN = "D:/exportNew"
 DIRECTORIO_DESTINO = "D:\\exportados\\htmls"
 
 
+
 try:
     rmtree(DIRECTORIO_DESTINO)
 except:
@@ -78,6 +79,7 @@ print("Copiado")
 print("Termino el Copiado :"+time.strftime("%H:%M:%S")) #Formato de 24 horas
 inicial = time.strftime("%H:%M:%S")
 horario = str(time.strftime("%H:%M:%S"))
+
 
 
 """
@@ -340,14 +342,15 @@ for Arkivo in maks:
         #bulk_data = []
         #print(contaLinea," ",Arkivo2)
         
-        if len(bulk_data) > 500: #	 attenti que van de a pares...
+        if len(bulk_data) > 200: #	 attenti que van de a pares...
             #print("Grabando el BULK....")
             try:
                 res = es.bulk(index = INDEX_NAME, body = bulk_data, refresh = True)
                 bulk_data = []
                 print("Grabo el BULK....")
             except:
-                print("Error ---   No funciono EL BULK 500 ElasticSearch ")   
+                print("Error ---   No funciono EL BULK 200 ElasticSearch ")   
+                archiErr.write("Error BULK 200 ElasticSearch  "+Arkivo2+"\n") 
                 bulk_data = []
                         
         contaLinea = contaLinea + 1
