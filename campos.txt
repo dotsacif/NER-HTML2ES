@@ -1,0 +1,87 @@
+CORTE SUPREMA
+ numero_sentencia
+- fecha_sentencia
+- anio_sentencia
+- magistrado_ponente
+- norma_demandada
+- accionante
+- materia
+- gaceta
+
+
+CONSEJO DE ESTADO
+ consejero_ponente
+- tipo_providencia_consejo_est
+- fecha_providencia
+- anio_providencia
+- numero_ext_radicacion
+- numero_int_radicacion
+- norma_demandada
+- materia
+- demandado
+- demandante
+
+
+CORTE CONSTITUCIONAL
+- magistrado_ponente
+- tipo_providencia_corte
+- fecha_providencia
+- anio_providencia
+- numero_proviencia
+- numero_radicacion_proceso
+- fecha_notificacion
+- norma_demandada
+- accionante
+- materia
+- anio_providencia
+- accionado
+
+CONSTITUCIONES
+- fecha
+- titulo_uniforme
+- materia
+- anio
+
+LEYES
+- fecha
+- numero
+- titulo_uniforme
+- sector
+- estado_documento
+- materia
+- anio
+
+DECRETOS
+- fecha
+- numero
+- entidad_emisora
+- titulo_uniforme
+- sector
+- estado_documento
+- materia
+- anio
+
+
+RESOLUCIONES
+- fecha
+- numero
+- entidad_emisora
+- sector
+- estado_documento
+- materia
+- anio
+
+ACTOS LEGISLATIVOS
+- fecha
+-numero
+- materia
+- anio
+
+DIRECTIVAS PRESIDENCIALES
+- fecha
+- numero
+- sector
+- estado_documento
+- materia
+- anio
+

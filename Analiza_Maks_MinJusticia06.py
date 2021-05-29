@@ -108,7 +108,7 @@ try:
         
                 'mappings': {
                         'properties': {
-                           'subtipo': {'type': 'text'},
+                            'subtipo': {'type': 'text'},
         	                'es_codigo':  {'type': 'text'},
         	                'estado_documento':  {'type': 'text'},
         	                'asunto':  {'type': 'text'},

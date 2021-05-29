@@ -1,0 +1,51 @@
+CORTE SUPREMA
+- fecha_sentencia
+- magistrado_ponente
+- norma_demandada
+- accionante
+- gaceta
+
+
+CONSEJO DE ESTADO
+- consejero_ponente
+- fecha_providencia
+- anio_providencia
+- numero_ext_radicacion
+- numero_int_radicacion
+- norma_demandada
+- demandado
+- demandante
+
+
+CORTE CONSTITUCIONAL
+- magistrado_ponente
+- tipo_providencia_corte
+- fecha_providencia
+- anio_providencia
+- numero_proviencia
+- numero_radicacion_proceso
+- fecha_notificacion
+- norma_demandada
+- accionante
+- anio_providencia
+- accionado
+
+CONSTITUCIONES
+- fecha
+
+LEYES
+- fecha
+
+DECRETOS
+- fecha
+
+
+RESOLUCIONES
+- fecha
+
+ACTOS LEGISLATIVOS
+- fecha
+
+DIRECTIVAS PRESIDENCIALES
+- fecha
+
