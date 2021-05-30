@@ -127,7 +127,7 @@ try:
                             'Estatutos' : {'type': 'text'},
                             'id_orig' : {'type': 'text'},
                             'title_orig' : {'type': 'text'},
-                            'coleccion_orig' : {'type': 'text'},
+                            'html_orig' : {'type': 'text'},
                             'texto_plano' : {'type': 'text'}, 
                             'tipo_providencia_consejo_est' : {'type': 'text'},
                             'accionado': {'type': 'text'},
@@ -147,7 +147,8 @@ try:
                             'numero_int_radicacion': {'type': 'text'},
                             'numero_proviencia': {'type': 'text'},
                             'numero_radicacion_proceso': {'type': 'text'},
-                            'tipo_providencia_corte': {'type': 'text'},                            
+                            'tipo_providencia_corte': {'type': 'text'},
+                            'coleccion': {'type': 'text'},
                             
         
                         }}
@@ -206,7 +207,7 @@ for Arkivo in maks:
    coleccion = " "
    id_orig  = " "
    title_orig = " "
-   coleccion_orig = " "    
+   html_orig = " "    
    subtipo = " " 
    es_codigo = " " 
    nombre_codigo = " " 
@@ -235,12 +236,21 @@ for Arkivo in maks:
    numero_proviencia= " "
    numero_radicacion_proceso= " "
    tipo_providencia_corte= " "
+   koleccion = " "
 
 
    while linea0 != '':
     # procesar línea
     linea0=archivo.readline()
     #print("proceso linea de la MAK ",linea0)
+    #print(linea0)
+    #name = input("---------------------- ")
+    
+    inicio2 = linea0.find('content-collection id=')
+    if inicio2 >0:
+       final2  = linea0.find('title=',inicio2)
+       koleccion  = linea0[inicio2+23:final2-2]
+    
     inicio = linea0.find('location=')
     if inicio >0:
         final  = linea0.find('.html',inicio)
@@ -273,12 +283,12 @@ for Arkivo in maks:
         inicio = linea0.find('location=')
         NomeFile = linea0[inicio+10:]
         final = NomeFile.find(".html")
-        coleccion_orig = NomeFile[:final+5]
+        html_orig = NomeFile[:final+5]
 
       
         Arkivo2 = "D:/exportNew/"+coleccion+"/"+NomeFile2
         
-        Arkivo2 = coleccion_orig
+        Arkivo2 = html_orig
         #destino2 = Arkivo2.replace("exportNew","Nuevos")
         #shutil.copytree(Arkivo2, destino2) 
         #sys.exit()  
@@ -351,11 +361,13 @@ for Arkivo in maks:
             cadena = cadena +'"' +k + '"' + ':' +'"' + v + '",' 
         
         #cadena = cadena[:-1] +"}"
-        coleccion_orig = coleccion_orig.replace('\\','\\\\') 
-        cadena = cadena +'"id_orig":'+ '"' +id_orig +'"' +', "title_orig": '+'"' +title_orig +'","coleccion_orig":'+'"' +coleccion_orig +'"' # +"}"
+        html_orig = html_orig.replace('\\','\\\\') 
+        cadena = cadena +'"id_orig":'+ '"' +id_orig +'"' +', "title_orig": '+'"' +title_orig +'","html_orig":'+'"' +html_orig +'"' # +"}"
         apareos["id_orig"] = id_orig
         apareos["title_orig"] = title_orig
-        apareos["coleccion_orig"] = coleccion_orig      
+        apareos["html_orig"] = html_orig
+        apareos["coleccion"] = koleccion
+        
         
         soup = BeautifulSoup(contenido_html,'html.parser')
         for data in soup(['style', 'script']):
@@ -382,7 +394,8 @@ for Arkivo in maks:
         #bulk_data = []
         #print(contaLinea," ",Arkivo2)
         
-        if len(bulk_data) > 200: #	 attenti que van de a pares...
+        #if len(bulk_data) > 200: #	 attenti que van de a pares...
+        if len(bulk_data) > 500: #	 attenti que van de a pares...
             #print("Grabando el BULK....")
             try:
                 res = es.bulk(index = INDEX_NAME, body = bulk_data, refresh = True)
