@@ -434,7 +434,7 @@ try:
     for doc in res['hits']['hits']:
         trozo = doc['_source']['coleccion_orig']
         #print("%s--->%s " % (doc['_id'],trozo[:300]))
-        print("%s---> %s %s" % (doc['_id'], doc['_source']['numero'],doc['_source']['id_orig']))
+        #print("%s---> %s %s" % (doc['_id'], doc['_source']['numero'],doc['_source']['id_orig']))
         continue
 except:
         print("Error No funciono Sanity Check ElasticSearch ")   
