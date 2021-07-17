@@ -16,6 +16,8 @@ https://medium.com/naukri-engineering/elasticsearch-tutorial-for-beginners-using
 ATENCION+   Ver...
 "ignore_above": 256
 
+PARA INSTALAR pip 
+file:///C:/Windows/System32/get-pip.py
 
 """
 import elasticsearch
@@ -361,7 +363,11 @@ for Arkivo in maks:
             cadena = cadena +'"' +k + '"' + ':' +'"' + v + '",' 
         
         #cadena = cadena[:-1] +"}"
-        html_orig = html_orig.replace('\\','\\\\') 
+        #html_orig = html_orig.replace('\\','\\') 
+        #print("-==================0------------------------------")
+        #print(html_orig)
+        #print("-==================0------------------------------")
+
         cadena = cadena +'"id_orig":'+ '"' +id_orig +'"' +', "title_orig": '+'"' +title_orig +'","html_orig":'+'"' +html_orig +'"' # +"}"
         apareos["id_orig"] = id_orig
         apareos["title_orig"] = title_orig
@@ -381,7 +387,7 @@ for Arkivo in maks:
  
         cadena = cadena +","+'"texto_plano":'+'"'+texto_plano+'"'+"}"
         apareos["texto_plano"] = texto_plano  
-           
+        #sys.exit()         
         #sys.exit()
         el_id = str(contaLinea)
 
