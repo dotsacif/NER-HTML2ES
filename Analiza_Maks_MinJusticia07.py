@@ -19,6 +19,13 @@ ATENCION+   Ver...
 PARA INSTALAR pip 
 file:///C:/Windows/System32/get-pip.py
 
+> # "...what I have to do on every system restart or docker desktop update:
+# open powershell
+# wsl -d docker-desktop
+# sysctl -w vm.max_map_count=262144
+>docker-compose -f docker-compose-data.yml up
+
+EN PREPRODUCCION 192.168.1.47 es DISCO "C" donde estan las exportaciones
 """
 import elasticsearch
 import os
