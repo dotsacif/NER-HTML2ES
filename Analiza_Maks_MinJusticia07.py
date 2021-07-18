@@ -400,8 +400,8 @@ for Arkivo in maks:
         #bulk_data = []
         #print(contaLinea," ",Arkivo2)
         
+        #if len(bulk_data) > 2000: #	 attenti que van de a pares...
         if len(bulk_data) > 200: #	 attenti que van de a pares...
-        #if len(bulk_data) > 500: #	 attenti que van de a pares...
             #print("Grabando el BULK....")
             try:
                 res = es.bulk(index = INDEX_NAME, body = bulk_data, refresh = True)
@@ -438,8 +438,8 @@ try:
     res = es.search(index = INDEX_NAME, size=2000, body={"query": {"match_all": {}}})
     print("%d SANITY CHECK documents found" % res['hits']['total']['value'])
     for doc in res['hits']['hits']:
-        trozo = doc['_source']['coleccion_orig']
-        #print("%s--->%s " % (doc['_id'],trozo[:300]))
+        trozo = doc['_source']['html_orig']
+        print("%s--->%s " % (doc['_id'],trozo[:300]))
         #print("%s---> %s %s" % (doc['_id'], doc['_source']['numero'],doc['_source']['id_orig']))
         continue
 except:
