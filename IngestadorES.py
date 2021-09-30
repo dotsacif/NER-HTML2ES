@@ -100,7 +100,7 @@ TYPE_NAME = 'ciclope'
 ID_FIELD = 'cms_id'
 
 try:
-        es = elasticsearch.Elasticsearch([{'host': 'localhost', 'port': 9200}])
+        es = elasticsearch.Elasticsearch([{'host': '192.168.8.73', 'port': 9200}])
         #es.indices.delete(index='minjusticia', ignore=[400, 404])
         
         # delete index if exists
