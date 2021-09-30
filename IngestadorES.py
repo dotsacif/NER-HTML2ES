@@ -94,7 +94,7 @@ horario = str(time.strftime("%H:%M:%S"))
 """
 Modulo de definiciones de ElasticSearch
 """
-ES_HOST = {"host" : "localhost", "port" : 9200}
+ES_HOST = {"host" : "192.168.8.73", "port" : 9200}
 INDEX_NAME = 'minjusticia'
 TYPE_NAME = 'ciclope'
 ID_FIELD = 'cms_id'
