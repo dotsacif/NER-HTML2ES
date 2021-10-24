@@ -56,65 +56,52 @@ horario = str(time.strftime("%H:%M:%S"))
 archiBulk = codecs.open(".."+os.sep+"Bulk"+el_epoch+".json", "w","utf-8") # Creo archivo Json en un nivel mas arriba
 archiErr = codecs.open(".."+os.sep+"ERR_"+el_epoch+".txt", "w+","utf-8") # Creo archivo de erroresen un nivel mas arriba
 
-"""
-Cambiar aca Desarrollo x Produccion
-"""
-# Desarrollo
-os.chdir("D:\\exportNew")
-# Produccion
-# os.chdir("C:\\exportNew")
-
+#os.chdir("M:\\exportNew")
+os.chdir("C:\\exportNew")
 
 osCurrent = os.getcwd()
 
+#DIRECTORIO_ORIGEN = "M:/exportNew"
+#DIRECTORIO_DESTINO = "M:\\exportados\\htmls"
 
-# DIRECTORIO_ORIGEN = "C:/exportNew"
-# DIRECTORIO_DESTINO = "C:\\exportados\\htmls"
 
-#
-#try:
-#    rmtree(DIRECTORIO_DESTINO)
-#except:
-#    print("No Borraaa")
-#    pass
-#
-#os.makedirs(DIRECTORIO_DESTINO, exist_ok=True)
-#
-##time.sleep(20)
-#
-#print("Copiando...")
-#
-##copy_tree(DIRECTORIO_ORIGEN, DIRECTORIO_DESTINO)
-#print("Copiado")
-#
-#print("Termino el Copiado :"+time.strftime("%H:%M:%S")) #Formato de 24 horas
+DIRECTORIO_ORIGEN = "C:/exportNew"
+DIRECTORIO_DESTINO = "C:\\exportados\\htmls"
+
+
+
+try:
+    rmtree(DIRECTORIO_DESTINO)
+except:
+    print("No Borraaa")
+    pass
+
+os.makedirs(DIRECTORIO_DESTINO, exist_ok=True)
+
+#time.sleep(20)
+
+print("Copiando...")
+
+#copy_tree(DIRECTORIO_ORIGEN, DIRECTORIO_DESTINO)
+print("Copiado")
+
+print("Termino el Copiado :"+time.strftime("%H:%M:%S")) #Formato de 24 horas
 inicial = time.strftime("%H:%M:%S")
 horario = str(time.strftime("%H:%M:%S"))
+
+
 
 """
 Modulo de definiciones de ElasticSearch
 """
-
-"""
-Cambiar aca Desarrollo x Produccion
-"""
-# Desarrollo 
-ES_HOST = {"host" : "localhost", "port" : 9200}
-# Produccion
-#ES_HOST = {"host" : "192.168.8.73", "port" : 9200}
-
+ES_HOST = {"host" : "192.168.8.73", "port" : 9200}
 INDEX_NAME = 'minjusticia'
 TYPE_NAME = 'ciclope'
 ID_FIELD = 'cms_id'
 
 try:
-        """
-        Cambiar aca Desarrollo x Produccion
-        """
-        # Desarrollo 
-        es = elasticsearch.Elasticsearch([{'host': 'localhost', 'port': 9200}])
-        # Produccion
-        #es = elasticsearch.Elasticsearch([{'host': '192.168.8.73', 'port': 9200}])
+        es = elasticsearch.Elasticsearch([{'host': '192.168.8.73', 'port': 9200}])
+        #es.indices.delete(index='minjusticia', ignore=[400, 404])
         
         # delete index if exists
         if es.indices.exists(INDEX_NAME):
@@ -317,6 +304,17 @@ for Arkivo in maks:
         
         try:
             archiIn  = codecs.open(Arkivo2, "r", "utf-8")
+            #destino = "D:\\htmls\\"+NomeFile2
+            # try:
+            #     #shutil.copy(Arkivo2, destino)
+            #     destino2 = Arkivo2.replace("exportNew","Nuevos")
+            #     shutil.copytree(Arkivo2, destino2) 
+            #     sys.exit()
+            #     #https://www.geeksforgeeks.org/python-shutil-copytree-method/
+            # except:
+            #     print("error al grabar ccccccccccccccccc",destino)
+            #     pass   
+                
         except:
             #print("Error al open de  "+">>>>>>"+Arkivo2)   
             archiErr.write("Error al open de  "+">>>>>>"+Arkivo2+" en la mak "+laMak+"\n")  
@@ -373,13 +371,10 @@ for Arkivo in maks:
         
         #cadena = cadena[:-1] +"}"
         #html_orig = html_orig.replace('\\','\\') 
-        html_orig = html_orig.replace('exportNew','htmls\exportNew') 
         #print("-==================0------------------------------")
         #print(html_orig)
         #print("-==================0------------------------------")
-        #print(html_orig)
-        #sys.exit()   
-        
+
         cadena = cadena +'"id_orig":'+ '"' +id_orig +'"' +', "title_orig": '+'"' +title_orig +'","html_orig":'+'"' +html_orig +'"' # +"}"
         apareos["id_orig"] = id_orig
         apareos["title_orig"] = title_orig
