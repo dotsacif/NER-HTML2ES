@@ -46,7 +46,7 @@ try:
         Cambiar aca Desarrollo x Produccion
         """
         # Desarrollo 
-        es = elasticsearch.Elasticsearch([{'host': '192.168.8.73', 'port': 9200}])
+        es = elasticsearch.Elasticsearch([{'host': 'localhost', 'port': 9200}])
         # Produccion
         #es = elasticsearch.Elasticsearch([{'host': '192.168.8.73', 'port': 9200}])
 
@@ -58,32 +58,36 @@ except:
 Modulo sanity check
 """
 print("=====================================================================")
-body01 = '{"query": { "match": { "anio": "2011"  }  } }'
+body01 = '{"query": { "match": { "anio": "1995"  }  } }'
 res = es.search(index='minjusticia',body=body01)
-print(body01)
+#print(body01)
 
-print("%d documents found" % res['hits']['total']['value'])
+
+
+## decreto 1397 del 2013 id_orig = 1740610 C:\exportNew\Decretos\1355\1740610.html   
+pepe = (res['hits']['hits'][0])
+print(pepe["_source"]["numero"])
 #for doc in res['hits']['hits']:
 #    trozo = doc['_source']['anio']
 #    print("%s--->%s " % (doc['_id'],trozo[:300]))
 #    #print("%s---> %s %s" % (doc['_id'], doc['_source']['numero'],doc['_source']['id_orig']))
 #    continue
-    
-print("=====================================================================")
-body01 = '{"query": { "match": { "numero_proviencia": "1149"  }  } }'
-res = es.search(index='minjusticia',body=body01)
-print(body01)
-print("%d documents found" % res['hits']['total']['value'])
-#for doc in res['hits']['hits']:
-#    trozo = doc['_source']['numero_proviencia']
-#    print("%s--->%s " % (doc['_id'],trozo[:300]))
-#    #print("%s---> %s %s" % (doc['_id'], doc['_source']['numero'],doc['_source']['id_orig']))
-#    continue
-print("=====================================================================")
-body01 = '{"query": { "match": { "coleccion": "CorteConstitucional"  }  } }'
-res = es.search(index='minjusticia',body=body01)
-print(body01)
-print("%d documents found" % res['hits']['total']['value'])
-print("=====================================================================")
-
-
+#    
+#print("=====================================================================")
+#body01 = '{"query": { "match": { "numero_proviencia": "1149"  }  } }'
+#res = es.search(index='minjusticia',body=body01)
+#print(body01)
+#print("%d documents found" % res['hits']['total']['value'])
+##for doc in res['hits']['hits']:
+##    trozo = doc['_source']['numero_proviencia']
+##    print("%s--->%s " % (doc['_id'],trozo[:300]))
+##    #print("%s---> %s %s" % (doc['_id'], doc['_source']['numero'],doc['_source']['id_orig']))
+##    continue
+#print("=====================================================================")
+#body01 = '{"query": { "match": { "coleccion": "CorteConstitucional"  }  } }'
+#res = es.search(index='minjusticia',body=body01)
+#print(body01)
+#print("%d documents found" % res['hits']['total']['value'])
+#print("=====================================================================")
+#
+#

@@ -1,32 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-curl -XPOST localhost:9200/index_local/my_doc_type/_bulk --data-binary  @/home/data1.json
-https://stackoverflow.com/questions/33340153/elasticsearch-bulk-index-json-data
-
-https://kb.objectrocket.com/elasticsearch/how-to-use-python-helpers-to-bulk-load-data-into-an-elasticsearch-index
-
-http://suin-juriscol.gov.co/index.html
-
-curl -X GET "localhost:9200/minjusticia/_mapping?pretty"
-
-https://elasticsearch-py.readthedocs.io/en/master/api.html
-https://medium.com/naukri-engineering/elasticsearch-tutorial-for-beginners-using-python-b9cb48edcedc
-
-
-ATENCION+   Ver...
-"ignore_above": 256
-
-PARA INSTALAR pip 
-file:///C:/Windows/System32/get-pip.py
-
-> # "...what I have to do on every system restart or docker desktop update:
-# open powershell
-# wsl -d docker-desktop
-# sysctl -w vm.max_map_count=262144
->docker-compose -f docker-compose-data.yml up
-
-EN PREPRODUCCION 192.168.1.47 es DISCO "C" donde estan las exportaciones
-"""
 import elasticsearch
 import os
 import codecs
@@ -53,14 +25,41 @@ print("Empieza :"+time.strftime("%H:%M:%S")) #Formato de 24 horas
 inicial = time.strftime("%H:%M:%S")
 horario = str(time.strftime("%H:%M:%S"))
 
-archiBulk = codecs.open("Bulk"+el_epoch+".json", "w","utf-8") # Creo archivo Json en un nivel mas arriba
-archiErr = codecs.open("ERR_"+el_epoch+".txt", "w+","utf-8") # Creo archivo de erroresen un nivel mas arriba
-archiErr = codecs.open("ERR_"+el_epoch+".txt", "w+","utf-8") # Creo archivo de erroresen un nivel mas arriba
+archiBulk = codecs.open(".."+os.sep+"Bulk"+el_epoch+".json", "w","utf-8") # Creo archivo Json en un nivel mas arriba
+archiErr = codecs.open(".."+os.sep+"ERR_"+el_epoch+".txt", "w+","utf-8") # Creo archivo de erroresen un nivel mas arriba
 
-
+"""
+Cambiar aca Desarrollo x Produccion
+"""
+# Desarrollo
+#os.chdir("D:\\exportNew")
+# Produccion
 os.chdir("C:\\exportNew")
+
+
 osCurrent = os.getcwd()
 
+
+# DIRECTORIO_ORIGEN = "C:/exportNew"
+# DIRECTORIO_DESTINO = "C:\\exportados\\htmls"
+
+#
+#try:
+#    rmtree(DIRECTORIO_DESTINO)
+#except:
+#    print("No Borraaa")
+#    pass
+#
+#os.makedirs(DIRECTORIO_DESTINO, exist_ok=True)
+#
+##time.sleep(20)
+#
+#print("Copiando...")
+#
+##copy_tree(DIRECTORIO_ORIGEN, DIRECTORIO_DESTINO)
+#print("Copiado")
+#
+#print("Termino el Copiado :"+time.strftime("%H:%M:%S")) #Formato de 24 horas
 inicial = time.strftime("%H:%M:%S")
 horario = str(time.strftime("%H:%M:%S"))
 
@@ -72,7 +71,7 @@ Modulo de definiciones de ElasticSearch
 Cambiar aca Desarrollo x Produccion
 """
 # Desarrollo 
-#ES_HOST = {"host" : "localhost", "port" : 9200}
+#·ES_HOST = {"host" : "localhost", "port" : 9200}
 # Produccion
 ES_HOST = {"host" : "192.168.8.73", "port" : 9200}
 
@@ -81,15 +80,37 @@ TYPE_NAME = 'ciclope'
 ID_FIELD = 'cms_id'
 
 try:
+	es = elasticsearch.Elasticsearch([{'host': '192.168.8.73', 'port': 9200}])
+except:
+	print("Error Inicio ElasticSearch ")   
+	archiErr.write("Error inicio ElasticSearch "+"\n")     
+	archiErr.close()
+	archiBulk.close()
+	sys.exit()
+
+try:
+	es = elasticsearch.Elasticsearch([{'host': '192.168.8.73', 'port': 9200}])
+	
+	# delete index if exists
+	if es.indices.exists(INDEX_NAME):
+		es.indices.delete(index=INDEX_NAME,ignore=[400, 404])
+except:
+	print("Error Borrado ElasticSearch ")   
+	archiErr.write("Error inicio ElasticSearch "+"\n")     
+	archiErr.close()
+	archiBulk.close()
+	sys.exit()
+
+
+try:
+        """
+        Cambiar aca Desarrollo x Produccion
+        """
+        # Desarrollo 
         #es = elasticsearch.Elasticsearch([{'host': 'localhost', 'port': 9200}])
         # Produccion
         es = elasticsearch.Elasticsearch([{'host': '192.168.8.73', 'port': 9200}])
         
-        # delete index if exists
-        if es.indices.exists(INDEX_NAME):
-            es.indices.delete(index=INDEX_NAME,ignore=[400, 404])
-            print("Borrando 'Ciclope' index...")
-            
         # index settings
         request_body = {
                 "settings" : {
@@ -165,7 +186,6 @@ Fin modulo ES
 
 #print(" Arranco ")
 apareos = dict()
-bulk_data = []
 
 maks =[]
 contenido = os.listdir(osCurrent)
@@ -230,7 +250,7 @@ for Arkivo in maks:
    tipo_providencia_corte= " "
    koleccion = " "
 
-   #print("Proceso ",Arkivo)
+
    while linea0 != '':
     # procesar línea
     linea0=archivo.readline()
@@ -287,17 +307,6 @@ for Arkivo in maks:
         
         try:
             archiIn  = codecs.open(Arkivo2, "r", "utf-8")
-            #destino = "D:\\htmls\\"+NomeFile2
-            # try:
-            #     #shutil.copy(Arkivo2, destino)
-            #     destino2 = Arkivo2.replace("exportNew","Nuevos")
-            #     shutil.copytree(Arkivo2, destino2) 
-            #     sys.exit()
-            #     #https://www.geeksforgeeks.org/python-shutil-copytree-method/
-            # except:
-            #     print("error al grabar ccccccccccccccccc",destino)
-            #     pass   
-                
         except:
             #print("Error al open de  "+">>>>>>"+Arkivo2)   
             archiErr.write("Error al open de  "+">>>>>>"+Arkivo2+" en la mak "+laMak+"\n")  
@@ -312,16 +321,10 @@ for Arkivo in maks:
              
         linea=".."
         # Empiezo a procesar los HTMLS.
-        apareos = dict()
         apareos.clear()
-        cadena = "{"
-        #print("\t\t\tproceso el archivo",Arkivo2)
-        #time.sleep(5)
         while linea != '':
          try:
             linea=archiIn.readline()
-            #print("---")
-            #print(linea[:60])
          except (IOError, ValueError):
             #print("Un I/O error o ValueError sucedio >>> "+">>>>>>"+Arkivo)
             archiErr.write("Un I/O error o ValueError sucedio >>> "+">>>>>>"+Arkivo+"\n") 
@@ -334,13 +337,11 @@ for Arkivo in maks:
          campos = ['<span field="subtipo">','<span field="es_codigo">','<span field="nombre_codigo">','<span field="estado_documento">','<span field="asunto">','<span field="materia">','<span field="sector">','<span field="entidad_emisora">','<span field="tipo">','<span field="estado">','<span field="epigrafe">','<span field="numero">','<span field="name">','<span field="anio">','<span field="es_estatuto">','<span field="titulo_uniforme">','<span field="Estatutos">','<span field="tipo_providencia_consejo_est">','<span field="cms_id">','<span field="accionado">','<span field="accionante">','<span field="anio_providencia">','<span field="consejero_ponente">','<span field="demandado">','<span field="demandante">','<span field="fecha">','<span field="fecha_notificacion">','<span field="fecha_providencia">','<span field="fecha_sentencia">','<span field="gaceta">','<span field="magistrado_ponente">','<span field="norma_demandada">','<span field="numero_ext_radicacion">','<span field="numero_int_radicacion">','<span field="numero_proviencia">','<span field="numero_radicacion_proceso">','<span field="tipo_providencia_corte">']
          for campo in campos:
 
-            campito = campo.replace('<span field="','')
-            campito = campito.replace('">','')
-            negativo = campo+"</span>"
-
-            #print("\tbusco camposs:",campo)          
-            #sys.exit()
-            if linea.find(campo) > 0 and linea.find(negativo) < 0:
+             campito = campo.replace('<span field="','')
+             campito = campito.replace('">','')
+             negativo = campo+"</span>"
+            
+             if linea.find(campo) > 0 and linea.find(negativo) < 0:
                  inicio = linea.find(campo)
                  largo = len(campo)
                  resto = linea[inicio:]
@@ -354,28 +355,20 @@ for Arkivo in maks:
                      apareos[campito] = payload
                  except:
                      pass
-                 #print("campo::::",campo)
-                 #print(apareos)
-            else:
-                 #print("\tNOHAY campo::::",campo)
-                 pass
-                
-            #sys.exit()
                      
  
-            
-            for k,v in apareos.items():
-                cadena = cadena +'"' +k + '"' + ':' +'"' + v + '",' 
-            
-                
-            #sys.exit()
-            #cadena = cadena[:-1] +"}"
-            #html_orig = html_orig.replace('\\','\\') 
-            #print("-==================0------------------------------")
-            #print(html_orig)
-            #print("-==================0------------------------------")
-    
-        """ Termine de leer el HTML"""
+        cadena = "{"
+        for k,v in apareos.items():
+            cadena = cadena +'"' +k + '"' + ':' +'"' + v + '",' 
+        
+        #cadena = cadena[:-1] +"}"
+        #html_orig = html_orig.replace('\\','\\') 
+        #html_orig = html_orig.replace('exportNew','htmls\exportNew') 
+        #print("-==================0------------------------------")
+        #print(html_orig)
+        #print("-==================0------------------------------")
+        #print(html_orig)
+        #sys.exit()   
         
         cadena = cadena +'"id_orig":'+ '"' +id_orig +'"' +', "title_orig": '+'"' +title_orig +'","html_orig":'+'"' +html_orig +'"' # +"}"
         apareos["id_orig"] = id_orig
@@ -393,7 +386,7 @@ for Arkivo in maks:
         
         #https://www.geeksforgeeks.org/remove-all-style-scripts-and-html-tags-using-beautifulsoup/
         #texto_plano = str(soup.get_text())
-        
+ 
         cadena = cadena +","+'"texto_plano":'+'"'+texto_plano+'"'+"}"
         apareos["texto_plano"] = texto_plano  
         #sys.exit()         
@@ -402,43 +395,29 @@ for Arkivo in maks:
 
         op_dict = {"index":{"_index": INDEX_NAME, "_id":el_id }  }
         
-        # Imprimo el diccionario antes de hacer el Append en la lista BulkData
-        #print(apareos["html_orig"])
-        #print("---------------------")
         bulk_data.append(op_dict)
         bulk_data.append(apareos)
-        #sys.exit()
+
         #res = es.bulk(index = INDEX_NAME, body = bulk_data, refresh = True)
         #bulk_data = []
         #print(contaLinea," ",Arkivo2)
         
         #if len(bulk_data) > 2000: #	 attenti que van de a pares...
-        if len(bulk_data) > 200: #	 attenti que van de a pares...
+        if len(bulk_data) > 500: #	 attenti que van de a pares...
             #print("Grabando el BULK....")
             try:
                 res = es.bulk(index = INDEX_NAME, body = bulk_data, refresh = True)
                 bulk_data = []
                 print("Grabo el BULK....")
-                op_dict.clear()
-                apareos.clear()
-                cadena = ""
             except:
                 print("Error ---   No funciono EL BULK 200 ElasticSearch ")   
                 archiErr.write("Error BULK 200 ElasticSearch  "+Arkivo2+"\n") 
-                op_dict.clear()
-                apareos.clear()
-            #bulk_data = []
-            #sys.exit()
-        else:
-            #print("largo de bulk data ",str(len(bulk_data)))
-            pass
-            
+                bulk_data = []
                         
         contaLinea = contaLinea + 1
        
         #archiBulk.write('{"index":{}}'+"\n")
         #archiBulk.write(cadena+"\n")
-        #print(cadena[:60])
         
 if len(bulk_data) > 0:
     print("bulk ULTIMO indexing...")
@@ -456,7 +435,7 @@ print("\n\n\nCantidad archivos HTML procesados",contaLinea)
 
 """
 Modulo sanity check
-"""
+
 try:
     res = es.search(index = INDEX_NAME, size=2000, body={"query": {"match_all": {}}})
     print("%d SANITY CHECK documents found" % res['hits']['total']['value'])
@@ -468,24 +447,12 @@ try:
 except:
         print("Error No funciono Sanity Check ElasticSearch ")   
         archiErr.write("Error No funciono Check ElasticSearch  "+"\n")     
-
-"""
 FINAL
 Modulo sanity check
 """
-"""
-Modulo sanity check
-"""
-print("=====================================================================")
-body01 = '{"query": { "match": { "anio": "2015"  }  } }'
-res = es.search(index='minjusticia',body=body01)
-#print(body01)
 
 
 
-## decreto 1397 del 2013 id_orig = 1740610 C:\exportNew\Decretos\1355\1740610.html   
-pepe = (res['hits']['hits'][0])
-print(pepe["_source"]["numero"])
 print("Inicio:"+str(inicial))    
 print("Termina:"+time.strftime("%H:%M:%S")) 
 
