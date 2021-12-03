@@ -72,30 +72,18 @@ Modulo de definiciones de ElasticSearch
 Cambiar aca Desarrollo x Produccion
 """
 # Desarrollo 
-<<<<<<< HEAD
-#ES_HOST = {"host" : "localhost", "port" : 9200}
-# Produccion
-ES_HOST = {"host" : "192.168.8.73", "port" : 9200}
-=======
 ES_HOST = {"host" : "localhost", "port" : 9200}
 # Produccion
 #ES_HOST = {"host" : "192.168.8.73", "port" : 9200}
->>>>>>> d37058b (Bug Fix duplicated records)
 
 INDEX_NAME = 'minjusticia'
 TYPE_NAME = 'ciclope'
 ID_FIELD = 'cms_id'
 
 try:
-<<<<<<< HEAD
-        #es = elasticsearch.Elasticsearch([{'host': 'localhost', 'port': 9200}])
-        # Produccion
-        es = elasticsearch.Elasticsearch([{'host': '192.168.8.73', 'port': 9200}])
-=======
         es = elasticsearch.Elasticsearch([{'host': 'localhost', 'port': 9200}])
         # Produccion
         #es = elasticsearch.Elasticsearch([{'host': '192.168.8.73', 'port': 9200}])
->>>>>>> d37058b (Bug Fix duplicated records)
         
         # delete index if exists
         if es.indices.exists(INDEX_NAME):
@@ -180,11 +168,8 @@ apareos = dict()
 bulk_data = []
 
 maks =[]
-<<<<<<< HEAD
-=======
 
 cant_docus = 0
->>>>>>> d37058b (Bug Fix duplicated records)
 contenido = os.listdir(osCurrent)
 for fichero in contenido:
     #print(fichero)
@@ -294,11 +279,7 @@ for Arkivo in maks:
         final = NomeFile.find(".html")
         html_orig = NomeFile[:final+5]
 
-<<<<<<< HEAD
-      
-=======
         
->>>>>>> d37058b (Bug Fix duplicated records)
         Arkivo2 = "C:/exportNew/"+coleccion+"/"+NomeFile2
         
         Arkivo2 = html_orig
@@ -336,13 +317,9 @@ for Arkivo in maks:
         apareos = dict()
         apareos.clear()
         cadena = "{"
-<<<<<<< HEAD
-        #print("\t\t\tproceso el archivo",Arkivo2)
-=======
         cant_docus =  cant_docus +1
         print("\t\t\tproceso el archivo",str(cant_docus)+"--"+Arkivo2)
         
->>>>>>> d37058b (Bug Fix duplicated records)
         #time.sleep(5)
         while linea != '':
          try:
@@ -367,10 +344,7 @@ for Arkivo in maks:
 
             #print("\tbusco camposs:",campo)          
             #sys.exit()
-<<<<<<< HEAD
-=======
             cadena = ""
->>>>>>> d37058b (Bug Fix duplicated records)
             if linea.find(campo) > 0 and linea.find(negativo) < 0:
                  inicio = linea.find(campo)
                  largo = len(campo)
@@ -407,10 +381,7 @@ for Arkivo in maks:
             #print("-==================0------------------------------")
     
         """ Termine de leer el HTML"""
-<<<<<<< HEAD
-=======
         #print("\t\t\t\t Terminado",Arkivo2)
->>>>>>> d37058b (Bug Fix duplicated records)
         
         cadena = cadena +'"id_orig":'+ '"' +id_orig +'"' +', "title_orig": '+'"' +title_orig +'","html_orig":'+'"' +html_orig +'"' # +"}"
         apareos["id_orig"] = id_orig
@@ -418,11 +389,7 @@ for Arkivo in maks:
         apareos["html_orig"] = html_orig
         apareos["coleccion"] = koleccion
         
-<<<<<<< HEAD
-        
-=======
         # proceso texto libre
->>>>>>> d37058b (Bug Fix duplicated records)
         soup = BeautifulSoup(contenido_html,'html.parser')
         for data in soup(['style', 'script']):
             # Remove tags
@@ -435,10 +402,7 @@ for Arkivo in maks:
         
         cadena = cadena +","+'"texto_plano":'+'"'+texto_plano+'"'+"}"
         apareos["texto_plano"] = texto_plano  
-<<<<<<< HEAD
-=======
         
->>>>>>> d37058b (Bug Fix duplicated records)
         #sys.exit()         
         #sys.exit()
         el_id = str(contaLinea)
@@ -456,37 +420,21 @@ for Arkivo in maks:
         #print(contaLinea," ",Arkivo2)
         
         #if len(bulk_data) > 2000: #	 attenti que van de a pares...
-<<<<<<< HEAD
-        if len(bulk_data) > 200: #	 attenti que van de a pares...
-=======
         if len(bulk_data) > 2000: #	 attenti que van de a pares...
->>>>>>> d37058b (Bug Fix duplicated records)
             #print("Grabando el BULK....")
             try:
                 res = es.bulk(index = INDEX_NAME, body = bulk_data, refresh = True)
                 bulk_data = []
-<<<<<<< HEAD
-                print("Grabo el BULK....")
-=======
                 print("Grabo el BULK..2000..")
->>>>>>> d37058b (Bug Fix duplicated records)
                 op_dict.clear()
                 apareos.clear()
                 cadena = ""
             except:
-<<<<<<< HEAD
-                print("Error ---   No funciono EL BULK 200 ElasticSearch ")   
-                archiErr.write("Error BULK 200 ElasticSearch  "+Arkivo2+"\n") 
-                op_dict.clear()
-                apareos.clear()
-            #bulk_data = []
-=======
                 print("Error ---   No funciono EL BULK 2000 ElasticSearch ")   
                 archiErr.write("Error BULK 2000 ElasticSearch  "+Arkivo2+"\n") 
                 op_dict.clear()
                 apareos.clear()
                 bulk_data = []
->>>>>>> d37058b (Bug Fix duplicated records)
             #sys.exit()
         else:
             #print("largo de bulk data ",str(len(bulk_data)))
@@ -515,11 +463,7 @@ print("\n\n\nCantidad archivos HTML procesados",contaLinea)
 
 """
 Modulo sanity check
-<<<<<<< HEAD
-"""
-=======
 
->>>>>>> d37058b (Bug Fix duplicated records)
 try:
     res = es.search(index = INDEX_NAME, size=2000, body={"query": {"match_all": {}}})
     print("%d SANITY CHECK documents found" % res['hits']['total']['value'])
@@ -532,20 +476,12 @@ except:
         print("Error No funciono Sanity Check ElasticSearch ")   
         archiErr.write("Error No funciono Check ElasticSearch  "+"\n")     
 
-<<<<<<< HEAD
-"""
-=======
->>>>>>> d37058b (Bug Fix duplicated records)
 FINAL
 Modulo sanity check
 """
 """
 Modulo sanity check
-<<<<<<< HEAD
-"""
-=======
 
->>>>>>> d37058b (Bug Fix duplicated records)
 print("=====================================================================")
 body01 = '{"query": { "match": { "anio": "2015"  }  } }'
 res = es.search(index='minjusticia',body=body01)
@@ -556,22 +492,12 @@ res = es.search(index='minjusticia',body=body01)
 ## decreto 1397 del 2013 id_orig = 1740610 C:\exportNew\Decretos\1355\1740610.html   
 pepe = (res['hits']['hits'][0])
 print(pepe["_source"]["numero"])
-<<<<<<< HEAD
-=======
 """
->>>>>>> d37058b (Bug Fix duplicated records)
 print("Inicio:"+str(inicial))    
 print("Termina:"+time.strftime("%H:%M:%S")) 
 
 archiErr.close()
 archiBulk.close()
 
-<<<<<<< HEAD
-"""
-curl -XGET localhost:9200/_cat/indices?v
-"""
-  
-=======
 
 #curl -XGET localhost:9200/_cat/indices?v
->>>>>>> d37058b (Bug Fix duplicated records)
