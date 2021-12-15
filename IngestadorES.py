@@ -486,6 +486,9 @@ Modulo sanity check
 Modulo sanity check
 """
 print("=====================================================================")
+
+
+"""
 body01 = '{"query": { "match": { "anio": "2015"  }  } }'
 res = es.search(index='minjusticia',body=body01)
 #print(body01)
@@ -495,11 +498,16 @@ res = es.search(index='minjusticia',body=body01)
 ## decreto 1397 del 2013 id_orig = 1740610 C:\exportNew\Decretos\1355\1740610.html   
 pepe = (res['hits']['hits'][0])
 print(pepe["_source"]["numero"])
+"""
+
 print("Inicio:"+str(inicial))    
 print("Termina:"+time.strftime("%H:%M:%S")) 
 
 archiErr.close()
 archiBulk.close()
+
+
+
 
 """
 curl -XGET localhost:9200/_cat/indices?v
