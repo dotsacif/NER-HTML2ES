@@ -389,6 +389,7 @@ for Arkivo in maks:
         apareos["html_orig"] = html_orig
         apareos["coleccion"] = koleccion
         
+        """
         # proceso texto libre
         soup = BeautifulSoup(contenido_html,'html.parser')
         for data in soup(['style', 'script']):
@@ -401,7 +402,8 @@ for Arkivo in maks:
         #texto_plano = str(soup.get_text())
         
         cadena = cadena +","+'"texto_plano":'+'"'+texto_plano+'"'+"}"
-        apareos["texto_plano"] = texto_plano  
+        apareos["texto_plano"] = texto_plano
+        """
         
         #sys.exit()         
         #sys.exit()
