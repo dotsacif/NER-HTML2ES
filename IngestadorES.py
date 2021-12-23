@@ -141,6 +141,7 @@ try:
                             'tipo_providencia_corte': {'type': 'text'},
                             'coleccion': {'type': 'text'},
                             'cms_collection_name': {'type': 'text'},
+                            'extracto_relatoria': {'type': 'text'},                            
                         }}
             }
         print("creando 'Ciclope' index...")
@@ -335,7 +336,7 @@ for Arkivo in maks:
             continue
 
     
-         campos = ['<span field="cms_collection_name">','<span field="subtipo">','<span field="es_codigo">','<span field="nombre_codigo">','<span field="estado_documento">','<span field="asunto">','<span field="materia">','<span field="sector">','<span field="entidad_emisora">','<span field="tipo">','<span field="estado">','<span field="epigrafe">','<span field="numero">','<span field="name">','<span field="anio">','<span field="es_estatuto">','<span field="titulo_uniforme">','<span field="Estatutos">','<span field="tipo_providencia_consejo_est">','<span field="cms_id">','<span field="accionado">','<span field="accionante">','<span field="anio_providencia">','<span field="consejero_ponente">','<span field="demandado">','<span field="demandante">','<span field="fecha">','<span field="fecha_notificacion">','<span field="fecha_providencia">','<span field="fecha_sentencia">','<span field="gaceta">','<span field="magistrado_ponente">','<span field="norma_demandada">','<span field="numero_ext_radicacion">','<span field="numero_int_radicacion">','<span field="numero_proviencia">','<span field="numero_radicacion_proceso">','<span field="tipo_providencia_corte">']
+         campos = ['<span field="extracto_relatoria">','<span field="cms_collection_name">','<span field="subtipo">','<span field="es_codigo">','<span field="nombre_codigo">','<span field="estado_documento">','<span field="asunto">','<span field="materia">','<span field="sector">','<span field="entidad_emisora">','<span field="tipo">','<span field="estado">','<span field="epigrafe">','<span field="numero">','<span field="name">','<span field="anio">','<span field="es_estatuto">','<span field="titulo_uniforme">','<span field="Estatutos">','<span field="tipo_providencia_consejo_est">','<span field="cms_id">','<span field="accionado">','<span field="accionante">','<span field="anio_providencia">','<span field="consejero_ponente">','<span field="demandado">','<span field="demandante">','<span field="fecha">','<span field="fecha_notificacion">','<span field="fecha_providencia">','<span field="fecha_sentencia">','<span field="gaceta">','<span field="magistrado_ponente">','<span field="norma_demandada">','<span field="numero_ext_radicacion">','<span field="numero_int_radicacion">','<span field="numero_proviencia">','<span field="numero_radicacion_proceso">','<span field="tipo_providencia_corte">']
          for campo in campos:
 
             campito = campo.replace('<span field="','')
